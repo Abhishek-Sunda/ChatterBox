@@ -24,7 +24,7 @@ const SideBar = ({SelectedUser, setSelectedUser}) => {
             <img src={assets.search_icon} alt="search" className='w-3' />
             <input type="text" className='bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='Search For User...'/>
         </div>
-
+        {/* User */}
         <div className='flex flex-col'>
             {userDummyData.map((user, index) => 
                 (
