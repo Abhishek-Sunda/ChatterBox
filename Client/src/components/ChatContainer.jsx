@@ -3,12 +3,12 @@ import assets, { messagesDummyData } from '../assets/assets'
 import { formatMessageTime } from '../lib/utilis' 
 
 const ChatContainer = ({SelectedUser, setSelectedUser}) => {
-  const scrollEnd = useRef  ();
+  const scrollEnd = useRef();
   useEffect(()=>{
     if(scrollEnd.current){
       scrollEnd.current.scrollIntoView({behavior : "smooth"})
     }
-  },[])
+  },[SelectedUser, messagesDummyData])
 
 
   return SelectedUser ? (
