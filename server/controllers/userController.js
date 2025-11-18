@@ -1,7 +1,7 @@
 // Sign Up New User
 
 import { generateToken } from "../lib/utilis";
-
+import cloudinary from "../lib/cloudinary";
 export const SignUp = async(req, res)=>{
     try{
          const {fullname, email, password, bio} = req.body;
@@ -53,11 +53,35 @@ export const LoginIn = async(req, res)=>{
 }
 
 //  To check id User Authenticated
-export const CheckAuth = (req,res) =>
+export const CheckAuth = (req, res) =>
 {
-    res.json({success: false, user:"req.user"});
+    res.json({success: true, user:"req.user"});
 }
 
-//  Update User Profile Details
+// Controller to Update user Profile Details
+
+export const updateProfile = async(req, res) =>{
+    try
+    {
+        const { profilePic, bio, fullName} = req.body;
+        const  userId = req.user._id;
+        if(!profilePic)
+        {
+            updatedUser = await User.findByIdAndUpdate(userId, {bio, fullName},{new:true});
+        }
+        else
+        {
+            const upload = await cloudinary.uploader.upload(profilePic);
+            updatedUser  = await User.findByIdAndUpdate(userId, {profilePic:upload.secure_url, bio, fullName}, {new:true});
+        }
+        res.json({success: true, user:updatedUser});
+
+    }
+    catch(error)
+    {
+        console.log(error);
+        res.json({success: false, message:error.message});
+    }
+}
 
 

@@ -1,17 +1,19 @@
-import User from "../modules/User";
+import User from "../modules/User.js";
 import jwt from "jsonwebtoken"
 
 
-export const processRoute = async(req, res, next) =>{
-    try{
-        const token = req.headers.token;
-        const deCoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(deCoded.userId.select("-sUserPwd"));
+export const protectRoute = async(req, res, next) =>{
+    try
+    {
+        const token     = req.headers.token;
+        const deCodedId = jwt.verify(token, process.env.JWT_SECRET);
+        const user       = await User.findById(deCodedId.userId.select("-sUserPwd"));
         if(!user)
         {
             return res.json({success: false, message:"User Not Found"});
         }
         req.user = user;
+        next();
     }
     catch(error)
     {
@@ -19,5 +21,4 @@ export const processRoute = async(req, res, next) =>{
         res.json({success:false, message:error.message})
     }
 }
-
 
